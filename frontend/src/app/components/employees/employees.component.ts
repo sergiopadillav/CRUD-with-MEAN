@@ -19,12 +19,33 @@ export class EmployeesComponent implements OnInit {
   }
 
   addEmployee(form?: NgForm){
-    this.employeeService.postEmployee(form.value)
-    .subscribe(res => {
-      this.resertForm(form);
-      M.toast({html: 'Save successfully' });
-      this.getEmployees();
-    });
+    if(form.value._id){
+      this.employeeService.putEmployee(form.value)
+      .subscribe(res => {
+        this.resertForm(form);
+        M.toast({html: 'Update successfully' });
+        this.getEmployees();
+      })
+    } else {
+      this.employeeService.postEmployee(form.value)
+      .subscribe(res => {
+        this.resertForm(form);
+        M.toast({html: 'Save successfully' });
+        this.getEmployees();
+      });
+    }
+  }
+
+  deleteEmployee(_id: string){
+    if(confirm("Are you sure you want to delate it????")){
+      this.employeeService.deleteEmployee(_id)
+      .subscribe(res => {
+        this.getEmployees();
+        M.toast({html: 'Dalete successfully' });
+      });
+    }
+
+
   }
 
   getEmployees(){
@@ -33,6 +54,10 @@ export class EmployeesComponent implements OnInit {
       this.employeeService.employees = res as Employee[];
       console.log(res);
     });
+  }
+
+  editEmployee(employee: Employee){
+    this.employeeService.selectedEmployee = employee;
   }
 
   resertForm(form?: NgForm){

@@ -5,6 +5,7 @@
       <div class="card" >
         <div class="card-content">
           <form #employeeForm="ngForm" (ngSubmit)="addEmployee(employeeForm)">
+            <input type="hidden" name="_id" #_id="ngModel" [(ngModel)] = "employeeService.selectedEmployee._id">
             <div class="row">
 
               <div class="input-field col s12">
@@ -36,7 +37,7 @@
       </div>
     </div>
     <div class="col s7">
-      <table>
+      <table class="striped" >
         <thead>
           <th>Name</th>
           <th>Position</th>
@@ -49,6 +50,15 @@
             <td> {{ employee.name}}</td>
             <td> {{ employee.position}}</td>
             <td> {{ employee.office}}</td>
+            <td>
+              <a (click)= "editEmployee(employee)">
+                <i class="material-icons">edit</i>
+              </a>
+
+              <a (click)= "deleteEmployee(employee._id)">
+                <i class="material-icons" style="margin-left:25px;">delete</i>
+              </a>
+            </td>
           </tr>
         </tbody>
 
